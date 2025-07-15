@@ -38,9 +38,14 @@ docker-compose up -d
 ```bash
 docker-compose exec ml-api python scripts/generate_sample_data.py
 ```
-
-2. **Train initial model**
+2. **Train data fraud (credit_card)**
 
 ```bash
 docker-compose exec ml-api python scripts/train_model.py
+```
+
+3. **Realtime Generate sample transaction**
+
+```bash
+docker-compose exec ml-api python scripts/realtime_service.py
 ```
