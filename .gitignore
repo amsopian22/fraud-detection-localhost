@@ -71,8 +71,9 @@ Thumbs.db
 # *.h5
 # *.pb
 
-# Data files (optional - uncomment if you don't want to track large data files)
-# *.csv
+# Data files - exclude large datasets
+*.csv
+fraud-detection-localhost/data/raw/credit_card_transaction_*.csv
 # *.parquet
 # *.json
 
