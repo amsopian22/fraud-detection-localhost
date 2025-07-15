@@ -1,0 +1,124 @@
+{
+  "model_name": "LightGBM Comprehensive Fraud Detector",
+  "best_model_type": "LightGBM",
+  "version": "v4.0.0",
+  "training_date": "2025-07-15T03:59:50.443860",
+  "approach": "Enhanced",
+  "undersampling_enabled": true,
+  "features": [
+    "merchant",
+    "category",
+    "amt",
+    "gender",
+    "lat",
+    "long",
+    "transaction_time",
+    "transaction_std",
+    "transaction_avg",
+    "age",
+    "day",
+    "month",
+    "hour"
+  ],
+  "training_samples": 44933,
+  "validation_samples": 276935,
+  "test_samples": 276936,
+  "models_compared": [
+    "XGBoost",
+    "RandomForest",
+    "LightGBM"
+  ],
+  "model_selection_score": 1.9976571971639911,
+  "preprocessing": {
+    "memory_optimization": true,
+    "undersampling_ratio": 0.2,
+    "normalization": "MinMaxScaler",
+    "categorical_encoding": "LabelEncoder"
+  },
+  "metrics": {
+    "validation_auc": 0.997657197163991,
+    "test_auc": 0.9981014220697951,
+    "val_accuracy": 0.9871341650567823,
+    "test_accuracy": 0.9867622844267268,
+    "val_precision": 0.22234513274336284,
+    "val_recall": 0.9544159544159544,
+    "test_precision": 0.21860865819513245,
+    "test_recall": 0.9639126305792972,
+    "optimal_threshold_for_high_recall": 3.98130323866909e-09,
+    "optimized_val_precision": 0.003802336288298698,
+    "optimized_val_recall": 1.0,
+    "optimized_test_precision": 0.0038023225582806135,
+    "optimized_test_recall": 1.0
+  },
+  "feature_importance": [
+    {
+      "feature": "amt",
+      "importance": 8076
+    },
+    {
+      "feature": "category",
+      "importance": 6501
+    },
+    {
+      "feature": "transaction_avg",
+      "importance": 6038
+    },
+    {
+      "feature": "transaction_time",
+      "importance": 5777
+    },
+    {
+      "feature": "transaction_std",
+      "importance": 4745
+    },
+    {
+      "feature": "age",
+      "importance": 4724
+    },
+    {
+      "feature": "lat",
+      "importance": 4072
+    },
+    {
+      "feature": "long",
+      "importance": 4035
+    },
+    {
+      "feature": "merchant",
+      "importance": 3935
+    },
+    {
+      "feature": "hour",
+      "importance": 3772
+    },
+    {
+      "feature": "day",
+      "importance": 3750
+    },
+    {
+      "feature": "month",
+      "importance": 3259
+    },
+    {
+      "feature": "gender",
+      "importance": 765
+    }
+  ],
+  "all_model_results": {
+    "XGBoost": {
+      "val_auc": 0.9974288128456698,
+      "test_auc": 0.9978670799858284,
+      "optimized_val_recall": 0.9658119658119658
+    },
+    "RandomForest": {
+      "val_auc": 0.9922082312838747,
+      "test_auc": 0.9919509591302828,
+      "optimized_val_recall": 1.0
+    },
+    "LightGBM": {
+      "val_auc": 0.997657197163991,
+      "test_auc": 0.9981014220697951,
+      "optimized_val_recall": 1.0
+    }
+  }
+}

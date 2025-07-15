@@ -1,0 +1,52 @@
+environments:
+  localhost:
+    docker_compose_file: docker-compose.yml
+    env_file: .env
+    health_check_url: http://localhost:8000/health
+    services: [postgres, redis, ml-api, dashboard, jupyter]
+    backup_enabled: false
+    monitoring_enabled: true
+    
+  staging:
+    docker_compose_file: docker-compose.staging.yml
+    env_file: .env.staging
+    health_check_url: https://staging-api.frauddetection.com/health
+    services: [postgres, redis, ml-api, dashboard, nginx]
+    backup_enabled: true
+    monitoring_enabled: true
+    deploy_strategy: rolling
+    pre_deploy_backup: true
+    
+  production:
+    docker_compose_file: docker-compose.prod.yml
+    env_file: .env.production
+    health_check_url: https://api.frauddetection.com/health
+    services: [postgres, redis, ml-api, dashboard, nginx, prometheus]
+    backup_enabled: true
+    monitoring_enabled: true
+    deploy_strategy: blue_green
+    pre_deploy_backup: true
+    post_deploy_tests: true
+    rollback_enabled: true
+
+health_check:
+  max_retries: 30
+  retry_interval: 10
+  timeout: 5
+  
+backup:
+  database_backup_path: ./backups/database
+  model_backup_path: ./backups/models
+  retention_days: 30
+  
+monitoring:
+  prometheus_enabled: true
+  grafana_enabled: false
+  alert_manager_enabled: true
+  slack_webhook_url: ${SLACK_WEBHOOK_URL}
+  
+security:
+  ssl_enabled: true
+  rate_limiting_enabled: true
+  api_key_required: true
+  cors_enabled: true
