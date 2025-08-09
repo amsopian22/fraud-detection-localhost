@@ -119,3 +119,73 @@ docker compose down -v
 ## License
 
 MIT License - see LICENSE file for details.
+
+---
+
+## Advanced Usage
+
+### Using Custom Data for Model Training
+
+The training script is configured to use sample data provided in the repository. To train the model on your own data, follow these steps:
+
+1.  **Prepare Your Data:**
+    - Your data must be in **CSV format**.
+    - You should have one file for training and one for testing.
+    - The files must contain the necessary columns for feature engineering. Key columns include: `cc_num`, `merchant`, `category`, `amt`, `first`, `last`, `gender`, `street`, `city`, `state`, `zip`, `lat`, `long`, `city_pop`, `job`, `dob`, `trans_num`, `unix_time`, `merch_lat`, `merch_long`, and the target variable `is_fraud`.
+
+2.  **Place Your Data Files:**
+    - The training script loads data from `/app/data/raw/` inside the Docker container. This corresponds to the `data/raw/` directory on your host machine. Place your training and testing CSV files there.
+
+3.  **Rename Your Files:**
+    - Rename your training data file to `credit_card_transaction_train.csv`.
+    - Rename your testing data file to `credit_card_transaction_test.csv`.
+    - The training script (`scripts/train_model.py`) is hardcoded to look for these specific filenames.
+
+4.  **Run Training:**
+    - Once the files are in place and correctly named, you can run the training process using the Docker command:
+      ```bash
+      docker compose exec ml-api python scripts/train_model.py
+      ```
+
+> **Note on Other File Formats:** To use other file formats like Parquet or Excel, you will need to modify `scripts/train_model.py`. Specifically, you would change the `pd.read_csv()` function calls to `pd.read_parquet()` or `pd.read_excel()` as appropriate.
+
+### Getting Real-time Predictions via API
+
+The ML API provides an endpoint for real-time fraud predictions. You can send a POST request with the transaction details to the `/prediction/` endpoint.
+
+- **Endpoint:** `http://localhost:8000/prediction/`
+- **Method:** `POST`
+- **Body:** A JSON object representing a single transaction.
+
+**Example using `curl`:**
+
+```bash
+curl -X 'POST' \
+  'http://localhost:8000/prediction/' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "cc_num": 1234567890123456,
+    "merchant": "fraud_merchant",
+    "category": "shopping_pos",
+    "amt": 999.99,
+    "first": "John",
+    "last": "Doe",
+    "gender": "M",
+    "street": "123 Main St",
+    "city": "Anytown",
+    "state": "NY",
+    "zip": 12345,
+    "lat": 40.7128,
+    "long": -74.0060,
+    "city_pop": 8537673,
+    "job": "Software Engineer",
+    "dob": "1990-01-01",
+    "trans_num": "abc123xyz456",
+    "unix_time": 1678886400,
+    "merch_lat": 40.7129,
+    "merch_long": -74.0061
+  }'
+```
+
+The API will respond with a JSON object containing the prediction (`is_fraud`) and the fraud probability.
