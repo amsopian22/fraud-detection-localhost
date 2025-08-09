@@ -68,6 +68,9 @@ class CoreFeatureEngineer:
         # Overall percentiles
         features['amt_percentile'] = features['amt'].rank(pct=True)
         
+        # Initialize the column first
+        features['amt_percentile_in_category'] = np.nan
+
         # Category-specific percentiles
         for category in features['category'].unique():
             mask = features['category'] == category
