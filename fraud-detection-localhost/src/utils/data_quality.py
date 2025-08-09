@@ -192,14 +192,16 @@ class DataQualityChecker:
                             column_violations.append(f"Values above maximum: {above_max}")
                 
                 # Check string lengths
-                if rules.get('type') == 'string' and column in df.select_dtypes(include=['object']).columns:
+                if rules.get('type') == 'string':
+                    # Ensure column is string type before using .str accessor
+                    str_col = df[column].astype(str)
                     if 'min_length' in rules:
-                        below_min_length = (df[column].str.len() < rules['min_length']).sum()
+                        below_min_length = (str_col.str.len() < rules['min_length']).sum()
                         if below_min_length > 0:
                             column_violations.append(f"Strings too short: {below_min_length}")
                     
                     if 'max_length' in rules:
-                        above_max_length = (df[column].str.len() > rules['max_length']).sum()
+                        above_max_length = (str_col.str.len() > rules['max_length']).sum()
                         if above_max_length > 0:
                             column_violations.append(f"Strings too long: {above_max_length}")
                 

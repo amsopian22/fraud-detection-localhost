@@ -1,4 +1,11 @@
 # src/feature_engineering/__init__.py
+import pandas as pd
+from typing import List
+import logging
+
+# Set up logger
+logger = logging.getLogger(__name__)
+
 from .core_features import CoreFeatureEngineer
 from .geo_features import GeoFeatureEngineer
 from .temporal_features import TemporalFeatureEngineer
