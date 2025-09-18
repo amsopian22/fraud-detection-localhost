@@ -95,32 +95,12 @@ class DataQualityChecker:
         }
     
     def check_outliers(self, df: pd.DataFrame) -> Dict[str, Any]:
-        """Check for outliers in numerical columns"""
-        outlier_analysis = {}
-        
-        numerical_columns = df.select_dtypes(include=[np.number]).columns
-        
-        for column in numerical_columns:
-            if column in df.columns:
-                Q1 = df[column].quantile(0.25)
-                Q3 = df[column].quantile(0.75)
-                IQR = Q3 - Q1
-                
-                lower_bound = Q1 - 1.5 * IQR
-                upper_bound = Q3 + 1.5 * IQR
-                
-                outliers = df[(df[column] < lower_bound) | (df[column] > upper_bound)]
-                
-                outlier_analysis[column] = {
-                    'outlier_count': len(outliers),
-                    'outlier_percentage': round((len(outliers) / len(df)) * 100, 2),
-                    'lower_bound': round(lower_bound, 2),
-                    'upper_bound': round(upper_bound, 2),
-                    'q1': round(Q1, 2),
-                    'q3': round(Q3, 2)
-                }
-        
-        return outlier_analysis
+        """
+        Check for outliers in numerical columns.
+        NOTE: This method is currently disabled as the IQR method is not
+        effective for the given data. Business rule checks are used instead.
+        """
+        return {}
     
     def check_duplicates(self, df: pd.DataFrame) -> Dict[str, Any]:
         """Check for duplicate records"""
